@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+
+   <body>
+    <h1 style="text-align: center;">Web Dashboard</h1>
+    
+    <table>
+        <tr>
+            <td>
+                <form action="http://localhost:5000/dash" method="post">
+                    <p>Control Panel</p>
+                    <p><input type="password" name = "password" /></p>
+                    <p><input type="submit" name="control" value="Start" /></p>
+                    <p><input type="submit" name="control" value="Abort" /></p>
+                </form>
+            </td>
+            <td id="status">
+                Status: Safe
+            </td>
+        </tr>
+    </table>
+
+    <br><br>
+
+      <table>
+        <caption style="text-align: center;">Enrolled Devices</caption>
+        <tr>
+            <th>Name</th>
+            <th>Room</th>
+        </tr>
+         {% for key, value in result.items() %}
+            <tr>
+               <td> {{ key }} </th>
+               <td> {{ value }} </td>
+            </tr>
+         {% endfor %}
+      </table>
+   </body>
+   <script>
+    if ( window.history.replaceState ) {
+      window.history.replaceState( null, null, window.location.href );
+    }
+    </script>
+</html>
