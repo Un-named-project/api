@@ -13,12 +13,13 @@
                 <form action="http://api.balstudent101.repl.co/dash" method="post">
                     <p>Control Panel</p>
                     <p><input type="password" name = "password" /></p>
+                    <p><input type="password" name = "password2" /></p>
                     <p><input type="submit" name="control" value="Start" /></p>
                     <p><input type="submit" name="control" value="Abort" /></p>
                 </form>
             </td>
             <td id="status">
-                Status: Safe
+                Ready: {{ status }}
             </td>
         </tr>
     </table>
@@ -26,7 +27,7 @@
     <br><br>
 
       <table>
-        <caption style="text-align: center;">Enrolled Devices</caption>
+        <caption style="text-align: center;">Devices</caption>
         <tr>
             <th>Name</th>
             <th>Room</th>
@@ -40,6 +41,8 @@
       </table>
    </body>
    <script>
+    // This script ensures that when you refresh the page, the form does not re-submit itself
+    // Doesn't really have a purpose but it's useful for testing purposes
     if ( window.history.replaceState ) {
       window.history.replaceState( null, null, window.location.href );
     }

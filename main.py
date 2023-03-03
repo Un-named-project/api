@@ -5,6 +5,9 @@ from dataclasses import dataclass
 import os
 import time
 
+# custom library import
+import password
+
 os.system("color")
 
 CEND      = '\33[0m'
@@ -27,7 +30,7 @@ global global_state
 machines = {}
 global_state = False
 
-CARMED = True #! The program is armed
+CARMED = True #! The program is not armed
 
 @dataclass
 class machine:
@@ -38,29 +41,31 @@ class machine:
 def dashboard():
     global global_state
     if request.method == "POST":
-        if request.form['control'] == 'Start' and request.form['password'] == "password":
+        if request.form['control'] == 'Start' and (password.check_pass(request.form['password']) and password.check_pass(request.form['password2'])):
             if not CARMED:
-                print(CBLUE + "Caution, attempt to run attack while dissarmed" + CEND)
-                return render_template('base.html', result=machines)
+                print(CBLUE + "Caution, attempt to run while dissarmed" + CEND)
+                return render_template('base.html', result=machines, status=global_state)
             else:
-                print(CBLACK + CREDBG + "Warning, attack is in progress!!!!" + CEND)
+                print(CBLACK + CREDBG + "Warning, in progress!!!!" + CEND)
                 global_state = True
-                return render_template('base.html', result=machines)
+                return render_template('base.html', result=machines, status=global_state)
         elif request.form['control'] == 'Abort':
             print(CYELLOW + "Attack aborted" + CEND)
             global_state = False
-            return render_template('base.html', result=machines)
+            return render_template('base.html', result=machines, status=global_state)
         else:
             global_state = False
-            return render_template('base.html', result=machines)
+            return render_template('base.html', result=machines, status=global_state)
         
     elif request.method == 'GET':
-        return render_template('base.html', result=machines)
+        return render_template('base.html', result=machines, status=global_state)
+
 @app.route('/add', methods=["GET", "POST"])
 def add():
-    name = request.args.get("name") # Testing purposes only, will be shortned to nm
-    room = request.args.get("room") # Testing purposes only, will be shortned to rm
-    
+    name = request.args.get("name")
+    room = request.args.get("room")
+    #? should the variable names be representative of the data they hold? considering it is a public api
+
     if room and name is not None:
         machines[name] = room
         print(machines)
