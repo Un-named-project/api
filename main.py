@@ -36,7 +36,8 @@ CARMED = True #! The program is not armed
 class machine:
     name: str
     room: str
-
+  
+  
 @app.route('/dash', methods=["GET", "POST"])
 def dashboard():
     global global_state
